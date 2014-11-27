@@ -85,9 +85,17 @@
                     }
                     
                     element.bind('click', function () {
-                        scope.$apply(function () {
-                            ctrl.toggleSelection(scope.dataRow);
-                        })
+                        var index = scope.dataCollection.indexOf(scope.dataRow);
+                        if(scope.selectionMode == 'single') {
+                            //unselect all the others
+                            for (var i = 0, l = scope.dataCollection.length; i < l; i++) {
+                                if (scope.dataCollection[i].isSelected && i !== index) {
+                                    element.parent().find('tr:eq('+i+')').removeClass('selected');
+                                }
+                            }
+                        }
+                        element.toggleClass('selected');
+                        ctrl.toggleSelection(scope.dataRow);
                     });
                 }
             };
